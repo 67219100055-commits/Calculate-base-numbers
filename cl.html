@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>เครื่องแปลงเลขฐาน</title>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: #f0f0f0;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .converter {
+      background: white;
+      padding: 30px;
+      margin: 20PX;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+
+    .converter h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    h2 {
+      margin-top: 20px;
+      color: #333;
+      text-align: center;
+    }
+    #steps {
+  white-space: pre-wrap;
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+}
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h1>เครื่องแปลงเลขฐาน</h1>
+
+    <label for="inputNumber">เลขต้นฉบับ:</label>
+    <input type="text" id="inputNumber" placeholder="กรอกเลขที่ต้องการแปลง">
+
+    <label for="fromBase">จากฐาน:</label>
+    <select id="fromBase">
+      <option value="2">ฐาน 2</option>
+      <option value="8">ฐาน 8</option>
+      <option value="10" selected>ฐาน 10</option>
+      <option value="16">ฐาน 16</option>
+    </select>
+
+    <label for="toBase">เป็นฐาน:</label>
+    <select id="toBase">
+      <option value="2">ฐาน 2</option>
+      <option value="8">ฐาน 8</option>
+      <option value="10">ฐาน 10</option>
+      <option value="16">ฐาน 16</option>
+    </select>
+
+    
+
+    <div style="display: flex; gap: 10px;">
+  <button onclick="convertBase()">แปลงค่า</button>
+  <button onclick="clearFields()" style="background-color: #6c757d;">เคลียร์ค่า</button>
+</div>
+
+    
+    <h2>ผลลัพธ์: <span id="result">-</span></h2>
+  </div>
+  <h2>วิธีทำ: <span id="steps">-</span></h2>
+    
+   
+  <script>
+    function convertBase() {
+  const input = document.getElementById('inputNumber').value.trim().toUpperCase();
+  const fromBase = parseInt(document.getElementById('fromBase').value);
+  const toBase = parseInt(document.getElementById('toBase').value);
+  const resultElement = document.getElementById('result');
+  const stepsElement = document.getElementById('steps');
+
+  try {
+    const decimalValue = parseInt(input, fromBase);
+
+
+    if (isNaN(decimalValue)) {
+      resultElement.textContent = 'ค่าที่ป้อนไม่ถูกต้อง';
+      stepsElement.textContent = '-';
+      return;
+    }
+
+    const converted = decimalValue.toString(toBase).toUpperCase();
+
+    
+    resultElement.textContent = converted;
+
+   
+    let steps = '';
+
+    if (fromBase !== 10) {
+      steps += `1. แปลงเลข ${input} จากฐาน ${fromBase} เป็นฐาน 10 = ${decimalValue}\n`;
+    } else {
+      steps += `1. เลขต้นฉบับเป็นฐาน 10 อยู่แล้ว = ${decimalValue}\n`;
+    }
+
+    if (toBase !== 10) {
+      steps += `2. แปลงเลข ${decimalValue} จากฐาน 10 เป็นฐาน ${toBase} = ${converted}`;
+    } else {
+      steps += `2. ไม่ต้องแปลง เพราะต้องการแสดงในฐาน 10`;
+    }
+
+    stepsElement.textContent = steps;
+  } catch (error) {
+    resultElement.textContent = 'เกิดข้อผิดพลาด';
+    stepsElement.textContent = '-';
+  }
+}
+  function clearFields() {
+  document.getElementById('inputNumber').value = '';
+  document.getElementById('fromBase').value = '10';
+  document.getElementById('toBase').value = '2';
+  document.getElementById('result').textContent = '-';
+  document.getElementById('steps').textContent = '-';
+  }
+
+    
+
+  </script>
+</body>
+</html>
